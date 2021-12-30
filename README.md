@@ -184,4 +184,47 @@ h) next, we're gonna create mongodb service
                         - mongo
                 --> mongo is gonna run first thanks to usage of depends_on   
 j) how to setup redis in this section 
-                             
+        1.  // install these dependencies 
+            --> first, npm install redis connect-redis express-session --save 
+        2. import these to varible 
+            const session = require('express-session')
+            const redis = require('redis')
+            let RedisStore = require('connect-redis')(session)
+        3. import REDIS_URL and REDIS_PORT to node-app --> environment
+                                                                --> - REDIS_    
+            let redisClient = redis.createClient({
+                host: REDIS_URL,
+                port: REDIS_PORT
+            })
+
+        4. 
+            app.use(
+                session({
+                    store: new RedisStore({client: redisClient}),
+                    secret: SESSION_SECRET,
+                    cookie: {
+                        secure: false,
+                        httpOnly: true,
+                        maxAge: 30000
+                    },
+                    resave: false,
+                    saveUninitialized: false,
+                })
+            );    
+        5. to test it, 
+            --> req.session.user = req.body.username;
+            check it from redis server in docker by redis-cli
+            keys * 
+            (user)
+            get user
+            see output
+i) how to push github 
+    1. create repository in github (any name you want ) mine is Docker-setup-with-Nodejs
+
+    2. echo "# Docker-setup-with-Nodejs" >> README.md
+        git init
+        git add README.md
+        git commit -m "first commit"
+        git branch -M main
+        git remote add origin https://github.com/Ikhtiyor31/Docker-setup-with-Nodejs.git
+        git push -u origin main
