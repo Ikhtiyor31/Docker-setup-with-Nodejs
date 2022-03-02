@@ -1,42 +1,62 @@
 
 docker setup
 
-1. create Dockerfile 
-    1. specify node version, any version you want
-        --> FROM node: 15 
-    2. set working directory whre you run all commands, it's optional, but it's highly recommended
-        --> WORKDIR /app
-    3. copy package.json to docker node image which we're gonna build
-        --> COPY package.json .(current dir in docker)
-    4. next, run npm install, so it's gonna install all packages in our image in docker
-        --> RUN npm install
-    5. copy . (current dir) ./ (to docker image)
-        COPY . ./
-    6. to expose 4000, port forwarding
-        EXPOSE 4000
-    7. to tell what command to run, when we build image, it's gonna run these command
-        CMD ['node', 'app.js']
-    // docker run these commands and cache results 
-2. next, we're gonna build docker image, write these command and run
-    1. docker build .
-    2. docker image ls // to check image in docker con
+**`1. create Dockerfile`**
 
-    3. docker image prune // to remove unnecessary image from docker container 
+- specify node version, any version you want
 
-    4. docker image rm IMAGE_ID // to remove specific image from docker
+        FROM node: 15
 
-    4. docker buld -t node-app-image . // to build docker image with specific namge flag
+- set working directory whre you run all commands, it's optional, but it's highly recommended
 
-    5. to check running image
-        docker ps
- 
-    5. so, we're gonna run currently built image
-        docker run --name node-app node-app-image
-        refresh page, unfortunately docker doesn't know that port, so we need to forward localhost port to docker port to run 
-     6. to to forward localhost port to docker port
-        docker run -p 4000:4000 -d --name node-app node-app-image
+        WORKDIR /app
+       
+- copy package.json to docker node image which we're gonna build
 
-3. next, we create dockerignore file not copy all files from local machine to docker container 
+       COPY package.json . 
+     
+- next, run npm install, so it's gonna install all packages in our image in docker
+
+       RUN npm install
+       
+- copy . (current dir) ./ (to docker image)
+
+       COPY . ./
+     
+- to expose 4000, port forwarding
+
+       EXPOSE 4000
+       
+- to tell what command to run, when we build image, it's gonna run these command
+
+       CMD ['node', 'app.js']
+    
+// docker run these commands and cache results 
+    
+**`2. next, we're gonna build docker image, write these command and run`**
+    
+       docker build .
+       
+       docker image ls // to check image in docker con
+
+       docker image prune // to remove unnecessary image from docker container 
+
+       docker image rm IMAGE_ID // to remove specific image from docker
+
+       docker buld -t node-app-image . // to build docker image with specific namge flag
+
+- to check running image
+
+       docker ps
+
+- so, we're gonna run currently built image
+    docker run --name node-app node-app-image
+    refresh page, unfortunately docker doesn't know that port, so we need to forward localhost port to docker port to run 
+- to to forward localhost port to docker port
+    docker run -p 4000:4000 -d --name node-app node-app-image
+
+**`3. next, we create dockerignore file not copy all files from local machine to docker container`**
+
     1. write name of files that you want to exclude in docker container ex (Dockerfile, .dockerignore)
 
 4. and, we're gonna make use of volume, which allows us to have persistant data of file system in our doc container
